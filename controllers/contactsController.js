@@ -56,7 +56,6 @@ res.json(contact)
   next(error)
 }
 }
-
 module.exports = {
   listContacts,
   getContactById,
