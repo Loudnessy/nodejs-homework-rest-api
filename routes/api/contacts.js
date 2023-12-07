@@ -4,9 +4,11 @@ const { isEmptyBody } = require('../../middlewares/isEmptyBody')
 const { validateBody } = require('../../middlewares/validateBody')
 const { isValidId } = require('../../middlewares/isValidId')
 const { updateContactSchema, addContactSchema, updateFavoriteContactSchema } = require('../../schemas/contactsSchema')
+const { authenticate } = require('../../middlewares/authenticate')
 
 
 const router = express.Router()
+router.use(authenticate)
 
 router.get('/', listContacts)
 

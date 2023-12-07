@@ -1,5 +1,6 @@
 const Joi = require('joi');
-const {Schema} = require('mongoose')
+const {Schema} = require('mongoose');
+const { handleSaveError, preUpdate } = require('./hooks');
 const emailRegexp = /^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/
 const addContactSchema = Joi.object({
     name: Joi.string().required(),
@@ -31,20 +32,14 @@ const addContactSchema = Joi.object({
       type: Boolean,
       default: false,
     },
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: 'user',
+    }
   }, {versionKey: false, timestamps: true})
-mongooseContactSchema.post("save", (error, data, next) => {
-  error.status = 400
-  next()
-})
-mongooseContactSchema.pre("findOneAndUpdate", function(next) {
-  this.options.new = true
-  this.options.runValidators = true
-  next()
-})
-mongooseContactSchema.post("findOneAndUpdate", (error, data, next) => {
-  error.status = 400
-  next()
-})
+mongooseContactSchema.post("save", handleSaveError)
+mongooseContactSchema.pre("findOneAndUpdate", preUpdate)
+mongooseContactSchema.post("findOneAndUpdate", handleSaveError)
 
   module.exports = {
     addContactSchema,
