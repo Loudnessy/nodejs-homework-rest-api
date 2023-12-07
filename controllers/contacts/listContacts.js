@@ -7,7 +7,6 @@ const listContacts = async (req, res, next) => {
       const skip = (page - 1) * limit
       const contacts = await Contact.find({owner: _id, favorite}, "-createdAt -updatedAt", {skip, limit}).populate("owner", "_id email")
       const total = await Contact.countDocuments()
-      console.log(total);
       res.json({
         total,
         page,

@@ -8,8 +8,8 @@ const authenticate = async (req, res, next) => {
         return next(httpError(401, "Authorization header not found"))
     }
     const [bearer, token] = authorization.split(" ")
-    if (bearer !== "Bearer") {
-         next(httpError(401))
+    if (bearer !== "Bearer" || !token) {
+         next(httpError(401, "Not authorized"))
     }
     try {
         const {id} = jwt.verify(token, JWT_SECRET)

@@ -8,7 +8,7 @@ try {
     const {email, password} = req.body
     const user = await User.findOne({email})
     if (user) {
-       throw httpError(409, "user with this email is already exist, try another")
+       throw httpError(409, "Email in use")
     }
     const hashPassword = await bcrypt.hash(password, 10)
     const newUser = await User.create({...req.body, password: hashPassword})
@@ -18,9 +18,9 @@ try {
      const token = jwt.sign(payload, JWT_SECRET, {expiresIn: "23h"})
      await User.findByIdAndUpdate(newUser._id, {token})
     
-    res.json({
-        newUser,
-        token
+    res.status(201).json({
+        email: newUser.email,
+        subscription: newUser.subscription,
     })
 } catch (error) {
   next(error)
