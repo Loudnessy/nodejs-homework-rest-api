@@ -1,10 +1,10 @@
 const express = require('express')
-const { register, login, current, logout, subscriptionChange } = require('../../controllers/authController')
 const { isEmptyBody } = require('../../middlewares/isEmptyBody')
 const { validateBody } = require('../../middlewares/validateBody')
 const { isValidId } = require('../../middlewares/isValidId')
 const { userAuthJoiRegisterSchema } = require('../../schemas/userAuthSchema')
 const { authenticate } = require('../../middlewares/authenticate')
+const { register, login, current, logout, subscriptionChange } = require('../../controllers/auth')
 
 const authRouter = express.Router()
 authRouter.post('/register', isEmptyBody, validateBody(userAuthJoiRegisterSchema), register)

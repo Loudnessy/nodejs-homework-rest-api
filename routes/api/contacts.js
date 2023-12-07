@@ -1,10 +1,10 @@
 const express = require('express')
-const { listContacts, getContactById, addContact, removeContact, updateContact } = require('../../controllers/contactsController')
 const { isEmptyBody } = require('../../middlewares/isEmptyBody')
 const { validateBody } = require('../../middlewares/validateBody')
 const { isValidId } = require('../../middlewares/isValidId')
 const { updateContactSchema, addContactSchema, updateFavoriteContactSchema } = require('../../schemas/contactsSchema')
 const { authenticate } = require('../../middlewares/authenticate')
+const { listContacts, getContactById, addContact, removeContact, updateContact } = require('../../controllers/contacts')
 
 
 const router = express.Router()
