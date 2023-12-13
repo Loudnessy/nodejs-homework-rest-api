@@ -5,6 +5,7 @@ const userAuthJoiRegisterSchema = Joi.object({
     password: Joi.string().required(),
       email: Joi.string().required(),
       subscription: Joi.string().valid("starter", "pro", "business").default("starter"),
+      avatarURL: Joi.string()
 })
 const userAuthJoiLoginSchema = Joi.object({
     password: Joi.string().required(),
@@ -27,6 +28,7 @@ const userAuthMongooseSchema = new Schema({
           enum: ["starter", "pro", "business"],
           default: "starter"
         },
+        avatarURL: String,
         token: String  
 }, {versionKey: false, timestamps: true})
 userAuthMongooseSchema.post("save", handleSaveError)

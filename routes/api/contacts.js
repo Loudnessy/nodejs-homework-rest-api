@@ -6,7 +6,6 @@ const { updateContactSchema, addContactSchema, updateFavoriteContactSchema } = r
 const { authenticate } = require('../../middlewares/authenticate')
 const { listContacts, getContactById, addContact, removeContact, updateContact } = require('../../controllers/contacts')
 
-
 const router = express.Router()
 router.use(authenticate)
 
