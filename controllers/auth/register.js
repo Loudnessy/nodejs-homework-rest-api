@@ -4,6 +4,8 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const {JWT_SECRET} = process.env
 const gravatar = require('gravatar');
+const uuid = require('uuid');
+const sendEmail = require('../../helpers/sendEmail');
 const register = async (req, res, next) => {
 try {
     const {email, password} = req.body
@@ -13,16 +15,23 @@ try {
     }
     const hashPassword = await bcrypt.hash(password, 10)
     const gravatarUrl = await gravatar.url(email, {s: '200', r: 'pg', d: '404'}).replace("//", '')
-    const newUser = await User.create({...req.body, password: hashPassword, avatarURL: gravatarUrl})
+    const verificationToken = uuid.v4()
+    const newUser = await User.create({...req.body, password: hashPassword, avatarURL: gravatarUrl, verify: false, verificationToken})
     const payload = {
         id: newUser._id
      }
      const token = jwt.sign(payload, JWT_SECRET, {expiresIn: "23h"})
      await User.findByIdAndUpdate(newUser._id, {token})
-    
+    const emailObj = {
+        to: email,
+        subject: "verify email",
+        html: `<a href=http://localhost:3000/users/verify/${verificationToken}>verify email click here</a>`
+    }
+     sendEmail(emailObj)
     res.status(201).json({
         email: newUser.email,
         subscription: newUser.subscription,
+        message: "check ur email and verify"
     })
 } catch (error) {
   next(error)

@@ -10,6 +10,9 @@ const login = async (req, res, next) => {
         if (!user) {
             throw httpError(404, `user with this ${email} is not found`)
          }
+         if (!user.verify) {
+            throw httpError(403, "user is not verified")
+         }
          const passwordCompare = await bcrypt.compare(password, user.password)
          if (!passwordCompare) {
             throw httpError(401, "Email or password is wrong")
